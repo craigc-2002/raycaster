@@ -7,6 +7,7 @@ import vector as v
 import math
 import ray
 
+
 class Player:
     def __init__(self, env, init_pos):
         self.env = env
@@ -21,23 +22,23 @@ class Player:
         """
         Method to move the player forward
         """
-        next_pos = self.position+self.dir_vec
+        next_pos = self.position + (self.dir_vec * 100)
         
-        if not self.check_collision(next_pos, self.env.obstacles):
+        if not self.check_collision(self.position+self.dir_vec, self.env.obstacles):
             self.position += self.dir_vec
 
     def turn_clockwise(self):
         """
         Method to turn the player clockwise
         """
-        self.direction -= 2*math.pi/180
+        self.direction -= (2*math.pi/180) * 5
         self.dir_vec = v.vector(math.sin(self.direction), math.cos(self.direction))
 
     def turn_anticlockwise(self):
         """
         Method to turn the player clockwise
         """
-        self.direction += 2*math.pi/180
+        self.direction += (2*math.pi/180) * 5
         self.dir_vec = v.vector(math.sin(self.direction), math.cos(self.direction))
 
     def check_collision(self, pos, obstacles):

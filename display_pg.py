@@ -12,14 +12,15 @@ import pygame
 import math
 import random as r
 
-class Display_pg:
+
+class DisplayPG:
 
     def __init__(self, screen, env, player):
         self.screen = screen
         self.env = env
         self.player = player
-        self.colour = (r.randint(0,255), r.randint(0,255), r.randint(0,255))
-        print(self.colour)
+        self.colour = (r.randint(0, 255), r.randint(0, 255), r.randint(0, 255))
+        # print(self.colour)
 
     def draw_3d(self, view, ray_width):
         """
@@ -50,20 +51,20 @@ class Display_pg:
         Method to draw each wall as a square on the screen
         """
         # Create the wall as a Rect object and display to the screen
-        new_wall = pygame.Rect(wall.coord[0], wall.coord[1], wall.length, wall.width)
+        new_wall = pygame.Rect(wall.coord[0]*0.1, wall.coord[1]*0.1, wall.length*0.1, wall.width*0.1)
         pygame.draw.rect(self.screen, self.colour, new_wall)
 
     def draw_player(self):
         """
-        Method too draw the player on a 2d map
+        Method to draw the player on a 2d map
         """
-        #self.draw_fov()
+        # self.draw_fov()
         # Draw  line representing player's direction
         pos = pygame.math.Vector2(self.player.position[0],self.player.position[1])
         dir_vec = pygame.math.Vector2(self.player.dir_vec[0], self.player.dir_vec[1])
-        pygame.draw.line(self.screen, (255, 255, 0), pos, pos+(dir_vec*70), 4)
+        pygame.draw.line(self.screen, (255, 255, 0), pos*0.1, (pos*0.1)+(dir_vec*7), 4)
         # Draw circle to represent player
-        pygame.draw.circle(self.screen, (255,0,0), pos, self.player.radius)
+        pygame.draw.circle(self.screen, (255, 0, 0), pos*0.1, self.player.radius*0.1)
 
     """
     def draw_fov(self):

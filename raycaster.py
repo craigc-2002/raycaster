@@ -24,7 +24,16 @@ class Raycaster:
         self.player_initialised = False
 
         self.n_rays = 100
-        
+
+        self.env = None
+
+        self.player = None
+
+        self.screen = None
+        self.display = None
+        self.clock = None
+        self.ray_width = None
+
         self.done = False
 
     def display_init(self, screen, win_dims, clock):
@@ -35,12 +44,12 @@ class Raycaster:
             - screen (pygame screen object)
             - win_dims (tuple) window width, window height
         """
-        if self.display_initialised == False and self.environment_initialised == True and self.player_initialised == True:
+        if self.display_initialised is False and self.environment_initialised and self.player_initialised:
             self.screen = screen
-            self.display = display_pg.Display_pg(screen, self.env, self.player)
+            self.display = display_pg.DisplayPG(screen, self.env, self.player)
             self.clock = clock
             self.ray_width = win_dims[0] / self.n_rays
-            
+
             self.display_initialised = True
 
     def environment_init(self, env_map, grid_details):
@@ -51,7 +60,7 @@ class Raycaster:
             - env_map (list of lists) represents the map of the environment
             - grid_details (list of lists) represents the grid of the level (number of grid squares(x,y), length and width of grid squares(x,y))
         """
-        if self.environment_initialised == False:
+        if not self.environment_initialised:
             self.env = environment.Environment(env_map, grid_details[0], grid_details[1])
             self.environment_initialised = True
 
@@ -62,13 +71,13 @@ class Raycaster:
         Parameters:
             - init_pos (tuple) initial position of the player
         """
-        if self.player_initialised == False and self.environment_initialised == True:
+        if not self.player_initialised and self.environment_initialised:
             self.player = player.Player(self.env, init_pos)
             self.player_initialised = True
-            
+
     def game_loop(self):
-        if self.display_initialised == True and self.environment_initialised == True and self.player_initialised == True:
-            while self.done == False:
+        if self.display_initialised and self.environment_initialised and self.player_initialised:
+            while not self.done:
                 # Process player inputs.
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -93,10 +102,16 @@ class Raycaster:
                 rays = self.player.cast_rays(self.n_rays)
                 self.display.draw_3d(rays, self.ray_width)
 
-                #display.draw_2d_map()
-                #display.draw_player()
+                self.display.draw_2d_map()
+                self.display.draw_player()
+
+                # Add current FPS to the screen
+                font = pygame.font.SysFont("Arial", 36)
+                fps_text = str(round(self.clock.get_fps()))
+                fps_text_img = font.render(fps_text, True, (0, 0, 0))
+                self.screen.blit(fps_text_img, (1220, 20))
 
                 pygame.display.flip()  # Refresh on-screen display
-                self.clock.tick(60)         # wait until next frame (run at 60 FPS)
+                self.clock.tick(60)  # wait until next frame (run at 60 FPS)
         else:
             print("Initialise the engine fully before calling the loop")
