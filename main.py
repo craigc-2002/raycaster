@@ -4,8 +4,6 @@ main.py is a test implementation of the raycaster with a very simple environment
 
 # Import modules used
 import pygame
-import math
-import random as r
 
 import raycaster
 
@@ -20,16 +18,16 @@ screen.fill("white")  # Fill the display with a solid color
 
 _ = False
 env_map = [[1, 1, 1, 1, 1],
-             [1, _, _, _, 1],
-             [1, _, 1, _, 1],
-             [1, _, _, _, 1],
-             [1, 1, 1, 1, 1]]
+           [1, _, _, _, 1],
+           [1, 1, 1, _, 1],
+           [1, _, _, _, 1],
+           [1, 1, 1, 1, 1]]
 
-grid_details = ((5,5),(100,100))
+grid_details = ((5, 5), (100, 100))
 
 engine = raycaster.Raycaster()
 engine.environment_init(env_map, grid_details)
-engine.player_init((150,150))
+engine.player_init((150, 150))
 engine.display_init(screen, (window_width, window_height), clock)
 
 engine.game_loop()
