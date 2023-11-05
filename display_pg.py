@@ -32,7 +32,7 @@ class DisplayPG:
         """
         height_scale = 30000
         for i in range(len(view)):
-            x_coord =  1280 - (i * ray_width)
+            x_coord = 1280 - (i * ray_width)
             y_coord = 360 - (height_scale*view[i]/2)
             
             new_wall = pygame.Rect(x_coord, y_coord, ray_width, height_scale*view[i])

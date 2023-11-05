@@ -22,7 +22,8 @@ class Obstacle:
 
         # List of object's corners, starting from top left moving clockwise
         self.corners = (c1, c2, c3, c4)
-    
+
+
 class Environment:
     """
     Class to hold the game environment
