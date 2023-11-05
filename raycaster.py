@@ -95,12 +95,18 @@ class Raycaster:
                     # If the a key is being pressed
                     if key_input[pygame.K_a]:
                         self.player.turn_anticlockwise()
+                    # If the z key is being pressed
+                    if key_input[pygame.K_z]:
+                        self.player.zoom_in()
+                    # If the x key is being pressed
+                    if key_input[pygame.K_x]:
+                        self.player.zoom_out()
 
                 # Display drawing loop
                 self.screen.fill("white")
 
                 rays = self.player.cast_rays(self.n_rays)
-                self.display.draw_3d(rays, self.ray_width)
+                self.display.draw_3d(rays, self.ray_width, self.player.height_scale)
 
                 self.display.draw_2d_map()
                 self.display.draw_player()

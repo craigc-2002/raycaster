@@ -13,12 +13,13 @@ class Player:
         self.env = env
         self.position = v.vector(init_pos[0], init_pos[1])
         self.radius = 15
-        
-        self.fov = 120*(math.pi/180) # Field of view (in radians)
+
         self.direction = math.pi/2 # Direction with 0 being pointing towards the top of the screen (in radians)
         self.dir_vec = v.vector(math.sin(self.direction), math.cos(self.direction)) # Unit vector in direction the player is facing
+        self.height_scale = 30000
+        self.dof = 1
         # camera plane = dir_vec rotated by 90 degrees
-        self.camera_plane = self.dir_vec.rotate(90)
+        self.camera_plane = self.dir_vec.rotate(90) * self.dof
 
     def move_forward(self):
         """
@@ -35,7 +36,7 @@ class Player:
         """
         self.direction -= (2*math.pi/180) * 5
         self.dir_vec = v.vector(math.sin(self.direction), math.cos(self.direction))
-        self.camera_plane = self.dir_vec.rotate(90)
+        self.camera_plane = self.dir_vec.rotate(90) * self.dof
 
     def turn_anticlockwise(self):
         """
@@ -43,7 +44,17 @@ class Player:
         """
         self.direction += (2*math.pi/180) * 5
         self.dir_vec = v.vector(math.sin(self.direction), math.cos(self.direction))
-        self.camera_plane = self.dir_vec.rotate(90)
+        self.camera_plane = self.dir_vec.rotate(90) * self.dof
+
+    def zoom_in(self):
+        self.dof -= (self.dof * 0.1)
+        self.height_scale += (self.height_scale * 0.1)
+        self.camera_plane = self.dir_vec.rotate(90) * self.dof
+
+    def zoom_out(self):
+        self.dof += (self.dof * 0.1)
+        self.height_scale -= (self.height_scale * 0.1)
+        self.camera_plane = self.dir_vec.rotate(90) * self.dof
 
     def check_collision(self, pos, obstacles):
         """

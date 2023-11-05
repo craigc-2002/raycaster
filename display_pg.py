@@ -22,7 +22,7 @@ class DisplayPG:
         self.colour = (r.randint(0, 255), r.randint(0, 255), r.randint(0, 255))
         # print(self.colour)
 
-    def draw_3d(self, view, ray_width):
+    def draw_3d(self, view, ray_width, height_scale):
         """
         Method to draw the 3d scene using rays cast from the player object.
 
@@ -30,7 +30,6 @@ class DisplayPG:
             - view (list of objects to be drawn to the screen) the scene is displayed as a series of very thin rectangles of height given by the raycasting algorithm
             - ray_length (integer) number of pixels wide each ray is
         """
-        height_scale = 30000
         for i in range(len(view)):
             x_coord = 1280 - (i * ray_width)
             y_coord = 360 - (height_scale*view[i]/2)
