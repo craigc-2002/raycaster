@@ -22,10 +22,10 @@ class Player:
         """
         Method to move the player forward
         """
-        next_pos = self.position + (self.dir_vec * 100)
+        next_pos = self.position + (self.dir_vec * 10)
         
-        if not self.check_collision(self.position+self.dir_vec, self.env.obstacles):
-            self.position += self.dir_vec
+        if not self.check_collision(next_pos, self.env.obstacles):
+            self.position = next_pos
 
     def turn_clockwise(self):
         """
