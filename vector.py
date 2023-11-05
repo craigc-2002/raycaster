@@ -216,3 +216,10 @@ class vector:
             unit = self
 
         return unit
+
+    def rotate(self, angle):
+        angle_rad = (angle * math.pi) / 180
+        x = self.x * math.cos(angle_rad) - self.y * math.sin(angle_rad)
+        y = self.x * math.sin(angle_rad) + self.y * math.cos(angle_rad)
+
+        return vector(x, y)
