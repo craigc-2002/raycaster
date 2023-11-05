@@ -27,6 +27,7 @@ class Ray:
 
         ray_path = self.start_pos - self.position
         distance = ray_path.mag
+        distance /= self.dir_vec.mag
         height = 1 / distance
 
         return height

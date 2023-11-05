@@ -17,6 +17,8 @@ class Player:
         self.fov = 120*(math.pi/180) # Field of view (in radians)
         self.direction = math.pi/2 # Direction with 0 being pointing towards the top of the screen (in radians)
         self.dir_vec = v.vector(math.sin(self.direction), math.cos(self.direction)) # Unit vector in direction the player is facing
+        # camera plane = dir_vec rotated by 90 degrees
+        self.camera_plane = self.dir_vec.rotate(90)
 
     def move_forward(self):
         """
@@ -33,6 +35,7 @@ class Player:
         """
         self.direction -= (2*math.pi/180) * 5
         self.dir_vec = v.vector(math.sin(self.direction), math.cos(self.direction))
+        self.camera_plane = self.dir_vec.rotate(90)
 
     def turn_anticlockwise(self):
         """
@@ -40,6 +43,7 @@ class Player:
         """
         self.direction += (2*math.pi/180) * 5
         self.dir_vec = v.vector(math.sin(self.direction), math.cos(self.direction))
+        self.camera_plane = self.dir_vec.rotate(90)
 
     def check_collision(self, pos, obstacles):
         """
@@ -66,16 +70,18 @@ class Player:
     def cast_rays(self, n):
         """
         Method to cast rays from the player within the fov, calculate the intersection with the environment obstacles and return this data
+        Rays are cast from a plane perpendicular to the player's direction vector
         """
-        d_theta = self.fov / n
-        min_angle = self.direction - self.fov/2
         view = []
 
         for i in range(n):
-            angle = min_angle + (d_theta*i)
-            ray_dir = v.vector(math.sin(angle), math.cos(angle))
+            # cast rays from camera plane
+            camera_x = (2 * ((n - i) / n)) - 1
+            ray_dir = self.dir_vec + (self.camera_plane * camera_x)
+
             new_ray = ray.Ray(self.env, self.position, ray_dir)
-            ray_distance = new_ray.march()
-            view.append(ray_distance)
-        
+            strip_height = new_ray.march()
+
+            view.append(strip_height)
+
         return view
